@@ -1,0 +1,24 @@
+BUILD_DIRECTORY=build
+HELLO_OBJECT_FILE=$(BUILD_DIRECTORY)/hello.o
+HELLO_BINARY_FILE=$(BUILD_DIRECTORY)/hello
+
+.SUFFIXES:
+
+all: hello
+
+$(BUILD_DIRECTORY):
+	mkdir -p $(BUILD_DIRECTORY)
+
+$(HELLO_BINARY_FILE): $(BUILD_DIRECTORY)
+	nasm -f elf64 -o $(HELLO_OBJECT_FILE) hello.asm
+	ld -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o $(HELLO_BINARY_FILE) -lc $(HELLO_OBJECT_FILE)
+
+hello: $(HELLO_BINARY_FILE)
+
+run-hello: $(HELLO_BINARY_FILE)
+	$(HELLO_BINARY_FILE)
+
+.PHONY: clean
+
+clean:
+	rm -r $(BUILD_DIRECTORY)
