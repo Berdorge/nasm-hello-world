@@ -1,15 +1,15 @@
-                    section             .text
+                    extern              printf
+
                     global              main
+
+                    section             .text
 main:
-                    mov                 eax, 4
-                    mov                 ebx, 1
-                    mov                 ecx, message
-                    mov                 edx, message_size
-                    syscall
+                    push                message
+                    call                printf
+                    add                 esp, 4
 
                     xor                 eax, eax
                     ret
 
                     section             .rodata
-message:            db                  "Hello, World!",0x0a
-message_size:       equ                 $ - message
+message:            db                  "Hello, World!", 0xA, 0
